@@ -57,11 +57,21 @@ Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug '~/my-prototype-plugin'
 " Plugin vimproc
-Plug 'Shougo/vimproc'
+" Plug 'Shougo/vimproc'
 " Plugin autocomplete
 Plug 'https://github.com/Shougo/neocomplete.vim'
 " Plugin indent guide
 Plug 'https://github.com/nathanaelkane/vim-indent-guides'
+Plug 'Yggdroot/indentLine'
+" Plugin neobundle
+Plug 'Shougo/neobundle.vim'
+" Plugin powerline theme
+Plug ' itchyny/lightline.vim'
+" Plugin Nvim-R
+" Plug 'jalvesaq/Nvim-R'
+Plug 'Shougo/deoplete.nvim'
+" Plug 'vim-scripts/Vim-R-plugin'
+Plug 'vim-scripts/fcitx.vim'
 " Plugin vim-hybrid Colorscheme
 Plug 'w0ng/vim-hybrid'
 Plug 'vim-scripts/phd'
@@ -84,11 +94,20 @@ call plug#end()
 
 " indent guide setting
 let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=black
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=lightgrey
 
 hi IndentGuidesOdd  ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
+
+" indentLine
+let g:indentLine_color_term = 0
+let g:indentLine_char = '┆'
+let g:indentLine_color_tty_light = 7 " (default: 4)
+let g:indentLine_color_dark = 1 " (default: 2)
+
+
+
 
 " Colorscheme: phd, twilight, hybrid
 "set background=dark
@@ -110,6 +129,21 @@ let g:neocomplete#enable_fuzzy_completion         = 1
 let g:neocomplete#lock_buffer_name_pattern        = '\*ku\*'
 " }}}
 
+"##### auto fcitx  ###########
+function! Fcitx2en()
+ let s:input_status = system("fcitx-remote")
+ if s:input_status == 2
+    let l:a = system("fcitx-remote -c")
+ endif
+endfunction
+
+set ttimeoutlen=150
+autocmd InsertLeave * call Fcitx2en()
+"##### auto fcitx end ######
+
+
+
+
 " neosnippet
 " Plugin key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -128,6 +162,29 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
+
+" r-vim
+let maplocalleader = ","
+ 
+" deoplete
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+" Use smartcase.
+let g:deoplete#enable_smart_case = 1
+" for Nvim-R
+if !exists('g:deoplete#omni_patterns')
+  let g:deoplete#omni_patterns = {}
+endif
+let g:deoplete#omni_patterns.r = '[[:alnum:].\\]\+'
+     
+" nvim-r
+let R_vsplit = 1
+let R_assign = 0
+
+let R_nvimpager = "horizontal"
+
+let R_objbr_place = "console,right"
+let R_objbr_opendf = 0  
 
 
 " The following are commented out as they cause vim to behave a lot
@@ -178,4 +235,3 @@ inoremap <C-l> <Right>
 if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
 endif
-
