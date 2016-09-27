@@ -91,33 +91,60 @@ Plug 'sonjapeterson/1989.vim'
 " Add plugins to &runtimepath
 call plug#end()
 
-
-
 " indent guide setting
 let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=darkgrey
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=lightgrey
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=235
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=239
 let g:indent_guides_enable_on_vim_startup = 0
 let g:indent_guides_size = 1
 hi IndentGuidesOdd  ctermbg=black
 hi IndentGuidesEven ctermbg=darkgrey
 
 " indentLine
-let g:indentLine_color_term = 0
+let g:indentLine_color_term = 248
 let g:indentLine_char = '|' " '┆'
+let g:indentLine_setColors = get(g:,'indentLine_setColors',1)
+let g:indentLine_faster = get(g:,'indentLine_faster',0)
 " let g:indentLine_color_tty_light = 7 " (default: 4)
 " let g:indentLine_color_dark = 1 " (default: 2)
+function! s:InitColor()
+    if ! g:indentLine_setColors
+        return
+    endif
 
+    if ! exists("g:indentLine_color_term")
+        if &background is# "light"
+            let term_color = 249
+        else
+            let term_color = 239
+        endif
+    else
+        let term_color = g:indentLine_color_term
+    endif
+
+    if ! exists("g:indentLine_color_gui")
+        if &background is# "light"
+            let gui_color = "Grey70"
+        else
+            let gui_color = "Grey30"
+        endif
+    else
+        let gui_color = g:indentLine_color_gui
+    endif
+
+    execute "highlight Conceal ctermfg=" . term_color . " ctermbg=NONE"
+    execute "highlight Conceal guifg=" . gui_color .  " guibg=NONE"
+endfunction
 
 autocmd ColorScheme * highlight Comment ctermfg=22 guifg=#008800
 
 
 " Colorscheme: phd, twilight, hybrid
-"set background=dark
-"let g:hybrid_use_Xresources = 1
-"let g:hybrid_custom_term_colors = 1
-"let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
-colorscheme badwolf
+ set background=dark
+ let g:hybrid_use_Xresources = 1
+ let g:hybrid_custom_term_colors = 1
+ let g:hybrid_reduced_contrast = 1 " Remove this line if using the default palette.
+colorscheme hybrid "badwolf
 
 " neocomplete {{{
 let g:neocomplete#enable_at_startup               = 1
@@ -148,9 +175,6 @@ endfunction
 set ttimeoutlen=150
 autocmd InsertLeave * call Fcitx2en()
 "##### auto fcitx end ######
-
-
-
 
 " neosnippet
 " Plugin key-mappings.
@@ -199,15 +223,6 @@ let R_nvimpager = "horizontal"
 let R_objbr_place = "console,right"
 let R_objbr_opendf = 0  
 
-
-
-
-
-
-
-
-
-
 " The following are commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.
 set number
@@ -224,15 +239,6 @@ set showmatch
 set matchtime=1
 set list
 set laststatus=2
-nnoremap j gj
-nnoremap k gk
-" change key mapping with pushing <Space>
-noremap <Space>h ^
-noremap <Space>l $
-noremap <Space>m %
-noremap <Space>v 0v$h
-noremap <Space>d 0v$hx
-noremap <Space>y 0v$hy
 set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
 set nrformats-=octal
 set hidden
@@ -246,14 +252,56 @@ set smartcase
 set incsearch
 set wrapscan
 set hlsearch
+set t_Co=256
 set clipboard=unnamedplus,autoselect
+
+" □とか○の文字があってもカーソル位置がずれないようにする
+if exists('&ambiwidth')
+  set ambiwidth=double
+endif
+
+
+nnoremap j gj
+nnoremap k gk
+" change key mapping with pushing <Space>
+noremap <Space>h ^
+noremap <Space>l $
+noremap <Space>m %
+noremap <Space>v 0v$h
+noremap <Space>d 0v$hx
+noremap <Space>y 0v$hy
+nnoremap Y y$ " yank to last
+" nnoremap x "_x without yank
+" nnoremap <C-k> "_dd without yank
+" inoremap <C-k> <Esc>"_ddi
+
 " cursor moved in insert mode
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
+
+
+autocmd FileType python setl autoindent
+autocmd FileType python setl smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
+autocmd FileType python setl tabstop=2 expandtab shiftwidth=2 softtabstop=2
+
+" endode setting
+if has('unix')
+  set fileformat=unix
+  set fileformats=unix,dos,mac
+  set fileencoding=utf-8
+  set fileencodings=utf-8,iso-2022-jp,cp932,euc-jp
+  set termencoding=
+elseif has('win32')
+  set fileformat=dos
+  set fileformats=dos,unix,mac
+  set fileencoding=utf-8
+  set fileencodings=iso-2022-jp,utf-8,euc-jp,cp932
+  set termencoding=
+endif
+
 " Source a global configuration file if available
 if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
 endif
-
