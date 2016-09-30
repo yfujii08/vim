@@ -105,8 +105,13 @@ let g:indentLine_color_term = 248
 let g:indentLine_char = '|' " '┆'
 let g:indentLine_setColors = get(g:,'indentLine_setColors',1)
 let g:indentLine_faster = get(g:,'indentLine_faster',0)
+
 " let g:indentLine_color_tty_light = 7 " (default: 4)
 " let g:indentLine_color_dark = 1 " (default: 2)
+" Let indentLine use current conceal options
+let g:indentLine_conceallevel  = &conceallevel 
+let g:indentLine_concealcursor = &concealcursor
+
 function! s:InitColor()
     if ! g:indentLine_setColors
         return
@@ -192,7 +197,7 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 
 " For conceal markers.
 let g:tex_conceal = ''
-let g:vim_markdown_conceal=0
+let g:vim_markdown_conceal=''
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
