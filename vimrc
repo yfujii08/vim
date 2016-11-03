@@ -226,7 +226,59 @@ let R_assign = 0
 let R_nvimpager = "horizontal"
 
 let R_objbr_place = "console,right"
-let R_objbr_opendf = 0  
+let R_objbr_opendf = 0 
+
+" インサートモードに入った時にカーソル行(列)の色を変更する
+augroup vimrc_change_cursorline_color
+  autocmd!
+  " インサートモードに入った時にカーソル行の色をブルーグリーンにする
+  autocmd InsertEnter * highlight CursorLine ctermbg=17 guibg=#DDA0DD | highlight CursorColumn ctermbg=17 guibg=#DDA0DD
+  " インサートモードを抜けた時にカーソル行の色を黒に近いダークグレーにする
+  autocmd InsertLeave * highlight CursorLine ctermbg=236 guibg=#303030 | highlight CursorColumn ctermbg=236 guibg=#303030
+augroup END
+
+
+" ---カンマコマンドモード---
+" 「,」を打ってから各キーを打つと各コマンドを実行
+let mapleader=","
+"" 「,r」：.vimrcのリロード
+"noremap <Leader>r :source /etc/vim/vimrc<CR>:noh<CR>
+"" 「,,」：ファイルの上書き保存
+nnoremap <Leader>, :<C-u>update<CR>
+"" 「,q」：ファイルを閉じる
+nnoremap <Leader>q :<C-u>q<CR>
+"" 「,Q」：ファイルを強制的に閉じる
+"nnoremap <Leader>Q :<C-u>q!<CR>
+"" 「,p」：ペースト
+"nnoremap <Leader>p :<C-u>set invpaste<CR>
+"" 「,k」：make
+"noremap <Leader>k :<C-u>make!<CR><CR>:<C-u>make! clean<CR><CR>
+"" 「,m」：マウスモードOFF
+"noremap <Leader>m :<C-u>set mouse=<CR>:set nonumber<CR>
+"" 「,M」：マウスモードON
+"noremap <Leader>M :<C-u>set mouse=a<CR>:set number<CR>
+"" 「,e」：メニューの表示(タブで各項目を選んでいく)
+"nnoremap <Leader>e :<C-u>emenu Commands.<TAB>
+" 「,s」：ウィンドウを縦分割
+"nnoremap <Leader>s :<C-u>sp<CR>
+" 「,v」：ウィンドウを横分割
+"nnoremap <Leader>v :<C-u>vs<CR>
+"" 「,S」：ウィンドウを縦分割(ファイルを選択)
+nnoremap <Leader>S :<C-u>sp <TAB>
+"" 「,V」：ウィンドウを横分割（ファイルを選択）
+nnoremap <Leader>V :<C-u>vs <TAB>
+"" 「,t」：新規タブを作成
+"nnoremap <Leader>t :<C-u>tabnew<cr>
+"" 「,T」：新規タブを作成（ファイルを選択）
+"nnoremap <Leader>T :<C-u>tabnew <TAB>
+"" 「,n」：行番号表示／非表示
+"noremap <Leader>n :<C-u>:setlocal number!<CR>
+"" 「,c」：カーソルラインの表示／非表示
+"noremap <Leader>c :<C-u>:setlocal cursorline!<CR>
+"" 「,C」：カーソルカラムの表示／非表示
+"noremap <Leader>C :<C-u>:setlocal cursorcolumn!<CR>
+"" 「,l」：タブ、空白、改行などの可視化ON／OFF
+"noremap <Leader>l :<C-u>:setlocal list!<CR>
 
 " The following are commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.
