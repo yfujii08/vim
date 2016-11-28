@@ -309,6 +309,14 @@ let vimrplugin_objbr_opendf = 0
 let vimrplugin_tmux_title = "Vim-R"
 let vimrplugin_vimpager = "tab"
 let vimrplugin_silent_term = 1
+
+" .Rprofile
+" if(interactive()){
+"   library(colorout)
+"   library(setwidth)
+"   library(vimcom)
+" }
+
 """
 
 " The following are commented out as they cause vim to behave a lot
