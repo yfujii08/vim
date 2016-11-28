@@ -70,7 +70,7 @@ Plug ' itchyny/lightline.vim'
 " Plugin Nvim-R
 " Plug 'jalvesaq/Nvim-R'
 Plug 'Shougo/deoplete.nvim'
-" Plug 'vim-scripts/Vim-R-plugin'
+Plug 'vim-scripts/Vim-R-plugin'
 Plug 'vim-scripts/fcitx.vim'
 Plug 'plasticboy/vim-markdown'
 " Plugin vim-hybrid Colorscheme
@@ -279,6 +279,37 @@ nnoremap <Leader>V :<C-u>vs <TAB>
 "noremap <Leader>C :<C-u>:setlocal cursorcolumn!<CR>
 "" 「,l」：タブ、空白、改行などの可視化ON／OFF
 "noremap <Leader>l :<C-u>:setlocal list!<CR>
+
+""" vim-r-plugin setting """
+" https://raw.githubusercontent.com/jcfaria/Vim-R-plugin/master/doc/r-plugin.txt
+" NeoComplete
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+ 
+" R (plugin: vim-R-plugin)
+if !exists('g:neocomplete#sources#omni#input_patterns')
+    let g:neocomplete#sources#omni#input_patterns = {}
+endif
+if !exists('g:neocomplete#sources#omni#functons')
+    let g:neocomplete#sources#omni#functions= {}
+endif
+let g:neocomplete#sources#omni#input_patterns.r = '[[:alnum:].\\]\+'
+let g:neocomplete#sources#omni#functions.r = 'rcomplete#CompleteR'
+ 
+" vim-r-plugin
+let vimrplugin_vsplit = 0
+let vimrplugin_assign = 0
+let vimrplugin_objbr_place = "console,right"
+let vimrplugin_objbr_opendf = 0
+let vimrplugin_tmux_title = "Vim-R"
+let vimrplugin_vimpager = "tab"
+let vimrplugin_silent_term = 1
+"""
 
 " The following are commented out as they cause vim to behave a lot
 " differently from regular Vi. They are highly recommended though.
